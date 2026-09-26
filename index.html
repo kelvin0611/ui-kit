@@ -40,6 +40,17 @@
   @media (max-width: 1023px) { .stage { height: 20rem; } }
   .hero-grid { display: grid; gap: 2rem; align-items: center; }
   @media (min-width: 1024px) { .hero-grid { grid-template-columns: 5fr 7fr; gap: 3.5rem; } }
+  /* 單獨下載卡 */
+  .dl {
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    background: #fff; border-radius: var(--radius-lg);
+    box-shadow: 0 0 0 2px var(--cta);
+    padding: 15px 18px; margin: 1.5rem 0 0;
+  }
+  .dl-l { flex: 1; min-width: 210px; }
+  .dl-t { font-weight: 700; font-size: 1.02rem; }
+  .dl-d { font-size: .85rem; color: var(--muted); margin-top: 3px; }
+  .dl-d code { background: var(--brand-100); padding: .1rem .35rem; border-radius: .25rem; font-size: .92em; }
 </style>
 </head>
 <body>
@@ -62,6 +73,20 @@
     <a href="#motion" class="nav-link">動效</a>
   </nav>
 </header>
+
+<!-- ═══════════ 單獨下載 ═══════════ -->
+<div class="wrap">
+  <div class="dl">
+    <div class="dl-l">
+      <div class="dl-t">📄 ui.css —— 單獨下載呢個檔</div>
+      <div class="dl-d">
+        一個檔 drop 入任何 project 就用得：
+        <code>&lt;link rel="stylesheet" href="ui.css"&gt;</code>
+      </div>
+    </div>
+    <a class="btn btn-dark" href="ui.css" download>⬇ 下載 ui.css</a>
+  </div>
+</div>
 
 <!-- ═══════════ Welcome Page 原樣 ═══════════ -->
 <div class="sec hero">
