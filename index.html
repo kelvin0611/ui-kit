@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UI Kit · 配色同 Welcome Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ui.css">
+<style>
+  .wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+  .sec { padding: 3.5rem 0; }
+  .sec + .sec { box-shadow: 0 -1px 0 var(--line); }
+  .sec > h2 {
+    font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em;
+    margin: 0 0 .3rem; color: var(--brand-950);
+  }
+  .sec > .hint { color: var(--muted); font-size: .92rem; margin: 0 0 1.8rem; }
+  .grid3 { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+  .grid2 { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .sw { border-radius: var(--radius); overflow: hidden; box-shadow: 0 0 0 1px var(--line); }
+  .sw .chip { height: 68px; }
+  .sw .meta { padding: 8px 10px; background: #fff; }
+  .sw .nm { font-size: 12.5px; font-weight: 600; }
+  .sw .hex { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .tok { font-family: var(--font-mono); font-size: 12px; color: var(--brand-800); }
+  table.tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.tbl th, table.tbl td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+  table.tbl th { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  .note { background: var(--brand-50); box-shadow: 0 0 0 1px var(--line); border-radius: var(--radius); padding: .9rem 1.1rem; font-size: .9rem; color: var(--brand-900); }
+  /* hero demo */
+  .hero { padding: 2rem 0 3rem; }
+  .hero .sl-line { display: flex; flex-wrap: nowrap; }
+  .hero .m { overflow: hidden; }
+  .hero .sl-en .m { padding-bottom: .22em; margin-bottom: -.22em; }
+  .stage { position: relative; height: 26rem; cursor: crosshair; }
+  .stage canvas { display: block; width: 100%; height: 100%; }
+  @media (max-width: 1023px) { .stage { height: 20rem; } }
+  .hero-grid { display: grid; gap: 2rem; align-items: center; }
+  @media (min-width: 1024px) { .hero-grid { grid-template-columns: 5fr 7fr; gap: 3.5rem; } }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ 頂條（＝ welcome page 嘅導覽）═══════════ -->
+<header class="app-topbar ring-b">
+  <a href="#" style="display:flex;align-items:center;gap:.6rem;text-decoration:none">
+    <span style="width:2rem;height:2rem;border-radius:var(--radius);background:var(--brand-600);color:#fff;display:grid;place-items:center">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 6.5C10.5 5 8.5 4.5 5.5 4.5v13c3 0 5 .5 6.5 2 1.5-1.5 3.5-2 6.5-2v-13c-3 0-5 .5-6.5 2zm0 0v13"/>
+      </svg>
+    </span>
+    <span style="font-weight:600;color:var(--brand-950);letter-spacing:-.02em">UI Kit</span>
+  </a>
+  <nav style="margin-left:auto;display:flex;gap:2px;font-size:14px">
+    <a href="#colors" class="nav-link">配色</a>
+    <a href="#type"   class="nav-link">排版</a>
+    <a href="#comp"   class="nav-link">元件</a>
+    <a href="#motion" class="nav-link">動效</a>
+  </nav>
+</header>
+
+<!-- ═══════════ Welcome Page 原樣 ═══════════ -->
+<div class="sec hero">
+  <div class="wrap">
+    <p class="label-mono" style="margin-bottom:1.4rem">Welcome page · 直接抄呢一版</p>
+    <div class="hero-grid">
+      <div>
+        <h1 class="slogan">
+          <span class="sl-line">
+            <span class="m"><span class="c" style="--i:0">知</span></span>
+            <span class="m"><span class="c" style="--i:1">識</span></span>
+            <span class="m"><span class="c" style="--i:2">唔</span></span>
+            <span class="m"><span class="c" style="--i:3">係</span></span>
+            <span class="m"><span class="c" style="--i:4">死</span></span>
+            <span class="m"><span class="c" style="--i:5">背</span></span>
+          </span>
+          <span class="sl-line">
+            <span class="m"><span class="c k" style="--i:6">係</span></span>
+            <span class="m"><span class="c k" style="--i:7">睇</span></span>
+            <span class="m"><span class="c k" style="--i:8">得</span></span>
+            <span class="m"><span class="c k" style="--i:9">見</span></span>
+          </span>
+        </h1>
+        <div style="margin-top:2.4rem">
+          <a href="#" class="btn btn-primary">
+            進入平台
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="stage" id="stage"><canvas id="helix" aria-hidden="true"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 配色 ═══════════ -->
+<div class="sec" id="colors">
+  <div class="wrap">
+    <h2>配色</h2>
+    <p class="hint">主色階由 <span class="tok">--brand-500 #51B2D3</span> 砌出嚟。淺色做底、中色做互動、深色做字。</p>
+    <div class="grid3" id="swBrand"></div>
+
+    <h2 style="margin-top:3rem">中性同語意</h2>
+    <p class="hint">文字用 <span class="tok">--ink</span> / <span class="tok">--muted</span>；邊框一定要用 <span class="tok">--line</span>。</p>
+    <div class="grid3" id="swNeutral"></div>
+
+    <h2 style="margin-top:3rem">DNA 四隻鹼基</h2>
+    <p class="hint">做視覺、圖表、分類標記。一對互補色：A–T、C–G。</p>
+    <div class="grid3" id="swBase"></div>
+
+    <div class="note" style="margin-top:2rem">
+      <b>點解白字唔放 brand-500：</b>白字喺 brand-500 上面只有 <b>2.5:1</b>，未過 AA。
+      放 <span class="tok">brand-700</span> 有 <b>4.6:1</b> ✓。要淺色底就配深字（例如 brand-100 配 brand-900）。
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 排版 ═══════════ -->
+<div class="sec" id="type">
+  <div class="wrap">
+    <h2>排版</h2>
+    <p class="hint">中文用 Noto Sans TC，英文／數字用 Geist。標題負 tracking（<span class="tok">-.03em</span>）睇落緊緻啲。</p>
+    <div class="grid2">
+      <div class="card">
+        <p class="label-mono">Slogan</p>
+        <p class="slogan" style="font-size:clamp(1.8rem,3.4vw,2.6rem)">知識唔係死背<span class="k">　係睇得見</span></p>
+      </div>
+      <div class="card">
+        <p class="label-mono">正文 / 次要 / 標籤</p>
+        <p style="margin:.5rem 0 .3rem">正文用 --ink，行高 1.75。</p>
+        <p style="margin:0 0 .8rem;color:var(--muted)">次要文字用 --muted（4.5:1）。</p>
+        <p class="label-mono" style="margin:0">Label mono · uppercase · tracking .1em</p>
+      </div>
+    </div>
+    <div class="card prose" style="margin-top:14px">
+      <p class="label-mono">Markdown 內文（.prose）</p>
+      <h3>小標題</h3>
+      <p>段落、<b>粗體</b>、<code>inline code</code>、<a href="#">連結</a>。</p>
+      <blockquote>引用塊：左邊 3px brand-400。</blockquote>
+      <table><tr><th>表頭</th><th>值</th></tr><tr><td>邊框用 --line</td><td>row</td></tr></table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 元件 ═══════════ -->
+<div class="sec" id="comp">
+  <div class="wrap">
+    <h2>元件</h2>
+    <p class="hint">全部靠 <span class="tok">ui.css</span>，唔使寫 CSS。</p>
+
+    <div class="card">
+      <p class="label-mono">按鈕</p>
+      <div class="row" style="margin-top:.7rem">
+        <button class="btn btn-primary">主要動作</button>
+        <button class="btn btn-dark">深色 CTA</button>
+        <button class="btn btn-ghost">次要</button>
+        <button class="btn btn-outline">外框</button>
+      </div>
+      <p class="card-sub" style="margin:.9rem 0 0">
+        hover 會上移 1px + 加深；focus-visible 有 2px brand-500 outline。
+      </p>
+    </div>
+
+    <div class="grid2" style="margin-top:14px">
+      <div class="card card-hover">
+        <p class="label-mono">卡（可撳）</p>
+        <p class="card-title">科目名</p>
+        <p class="card-sub">一句描述　·　3 項內容</p>
+      </div>
+      <div class="card">
+        <p class="label-mono">標籤</p>
+        <div class="row" style="margin-top:.6rem">
+          <span class="pill">預設</span>
+          <span class="pill" style="background:var(--ok-bg);color:#065F46">成功</span>
+          <span class="pill" style="background:var(--warn-bg);color:#92400E">警告</span>
+          <span class="pill" style="background:var(--danger-bg);color:#991B1B">錯誤</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <p class="label-mono">Shadow-as-border（Vercel 式）</p>
+      <p style="margin:.7rem 0 0;font-size:.92rem;color:var(--muted)">
+        用 <span class="tok">box-shadow: 0 0 0 1px var(--line)</span> 而唔用 <span class="tok">border</span> ——
+        唔會撐大版面，亦唔受 box-sizing 影響。上面啲卡就係咁做。
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 動效 ═══════════ -->
+<div class="sec" id="motion">
+  <div class="wrap">
+    <h2>動效</h2>
+    <p class="hint">micro 120ms · 組件 240ms · 頁面／reveal 480ms。入場 ease-out，離場 ease-in。</p>
+    <table class="tbl">
+      <tr><th>Token</th><th>值</th><th>用喺</th></tr>
+      <tr><td class="tok">--dur-1</td><td class="tok">120ms</td><td>hover、顏色、focus（micro）</td></tr>
+      <tr><td class="tok">--dur-2</td><td class="tok">240ms</td><td>換頁 fade-up、抽屜、卡升降（組件）</td></tr>
+      <tr><td class="tok">--dur-3</td><td class="tok">480ms</td><td>整頁轉場、reveal（頁面）</td></tr>
+      <tr><td class="tok">--ease-out</td><td class="tok">cubic-bezier(.16,1,.3,1)</td><td>入場（＝ GSAP expo.out）</td></tr>
+      <tr><td class="tok">--ease-in-out</td><td class="tok">cubic-bezier(.65,0,.35,1)</td><td>離場</td></tr>
+    </table>
+    <div class="row" style="margin-top:1.4rem">
+      <button class="btn btn-ghost" onclick="replay()">▶ 重播上面個 mask reveal</button>
+      <span class="card-sub">一次一個主角；stagger 40–120ms</span>
+    </div>
+    <div class="note" style="margin-top:1.6rem">
+      <b>兩條一定要跟：</b><br>
+      ① 加 <span class="tok">prefers-reduced-motion</span> 嘅話，<b>一定要連 animation-delay 都清零</b> ——
+      只縮短 duration，開咗「減少動畫」嘅人會望住空白成分鐘。<br>
+      ② mask reveal 唔好再加 opacity —— mask 本身已經遮住，加咗會變「淡入 + 升起」兩重效果。
+    </div>
+
+    <h2 style="margin-top:3rem">手機（&lt; 768px）</h2>
+    <p class="hint">側欄變抽屜。界線一定要同 <span class="tok">--bp-mobile: 767px</span> 對齊。</p>
+    <div class="row">
+      <button class="btn btn-outline" onclick="document.getElementById('demo-drawer').classList.toggle('is-open')">
+        開／閂抽屜（收窄個窗先睇到效果）
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="backdrop" hidden onclick="document.getElementById('demo-drawer').classList.remove('is-open')"></div>
+<aside class="app-sidebar" id="demo-drawer" style="position:fixed;top:var(--rail);bottom:0;left:0;z-index:30">
+  <div style="padding:1rem 1.1rem">
+    <p class="label-mono">側欄</p>
+    <p style="margin:.6rem 0;font-size:.92rem">只有喺 767px 以下，佢先會變抽屜。</p>
+  </div>
+</aside>
+
+<footer class="ring-t" style="margin-top:3rem">
+  <p class="label-mono" style="text-align:center;padding:1.6rem">UI Kit</p>
+</footer>
+
+<script>
+/* ═══ 色板由 CSS 變數讀出嚟砌 —— 改 ui.css 呢版自動跟 ═══ */
+(function () {
+  var CS = getComputedStyle(document.documentElement);
+  function v(n) { return CS.getPropertyValue(n).trim(); }
+  function swatch(el, name, val, label) {
+    var d = document.createElement('div');
+    d.className = 'sw';
+    d.innerHTML = '<div class="chip" style="background:' + val + '"></div>'
+      + '<div class="meta"><div class="nm">' + (label || name) + '</div>'
+      + '<div class="hex">' + val.toUpperCase() + ' · var(' + name + ')</div></div>';
+    el.appendChild(d);
+  }
+  var i;
+  var STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+  var b = document.getElementById('swBrand');
+  for (i = 0; i < STEPS.length; i++) {
+    var step = STEPS[i];
+    swatch(b, '--brand-' + step, v('--brand-' + step),
+            'brand-' + step + (step === 500 ? '  ★ 本尊' : ''));
+  }
+  swatch(document.getElementById('swNeutral'), '--ink', v('--ink'));
+  swatch(document.getElementById('swNeutral'), '--muted', v('--muted'));
+  swatch(document.getElementById('swNeutral'), '--line', v('--line'));
+  swatch(document.getElementById('swNeutral'), '--canvas', v('--canvas'));
+  swatch(document.getElementById('swNeutral'), '--cta', v('--cta'));
+  swatch(document.getElementById('swBase'), '--base-a', v('--base-a'), 'A 腺嘌呤');
+  swatch(document.getElementById('swBase'), '--base-t', v('--base-t'), 'T 胸腺嘧啶');
+  swatch(document.getElementById('swBase'), '--base-c', v('--base-c'), 'C 胞嘧啶');
+  swatch(document.getElementById('swBase'), '--base-g', v('--base-g'), 'G 鳥嘌呤');
+})();
+
+function replay() {
+  document.querySelectorAll('.hero .c').forEach(function (el) {
+    el.style.animation = 'none';
+    void el.offsetWidth;
+    el.style.animation = '';
+  });
+}
+
+/* ═══ 3D DNA 雙螺旋（同 LearnHub welcome page 一樣）═══
+   真透視投影（z 影響大細同位置）+ 深度排序（遠嘅先畫）。 */
+(function () {
+  var canvas = document.getElementById('helix');
+  var stage = document.getElementById('stage');
+  if (!canvas || !stage) return;
+  var ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var ZOOM = 2.0;        /* 想調大細改呢個 */
+  var SPEED = 0.003;     /* 轉速 */
+
+  var BASES = {
+    A: { color: '#E4572E', pair: 'T' },
+    T: { color: '#1F6FB2', pair: 'A' },
+    C: { color: '#2E9E6B', pair: 'G' },
+    G: { color: '#E0A100', pair: 'C' }
+  };
+  var ORDER = ['A', 'T', 'C', 'G'];
+
+  var PAIRS = 46, RADIUS = 62, TWIST = 0.36, SPAN = 620, FOCAL = 520;
+  var w = 0, h = 0, dpr = 1, t = 0;
+  var pointer = { x: 0, y: 0, tx: 0, ty: 0, px: -999, py: -999, on: false };
+
+  var PARTICLES = 46, PUSH_R = 90, PUSH_F = 2.0, SPRING = 0.008, DAMPING = 0.92, WANDER = 3.2;
+  var DOT_COLORS = ['#77C3DD', '#51B2D3', '#A5D8E8'];
+  var parts = [];
+
+  for (var pi = 0; pi < PARTICLES; pi++) {
+    var pang = Math.random() * Math.PI * 2;
+    var prad = Math.sqrt(Math.random()) * 0.5;   /* sqrt → 面積均勻，唔會中間密 */
+    parts.push({
+      nx: 0.5 + Math.cos(pang) * prad, ny: 0.5 + Math.sin(pang) * prad,
+      hx: 0, hy: 0, x: 0, y: 0, vx: 0, vy: 0, placed: false,
+      r: 1 + Math.random() * 1.9, a: 0.22 + Math.random() * 0.42,
+      ph: Math.random() * Math.PI * 2, c: DOT_COLORS[pi % DOT_COLORS.length]
+    });
+  }
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var rect = stage.getBoundingClientRect();
+    w = Math.max(1, rect.width); h = Math.max(1, rect.height);
+    canvas.width = Math.floor(w * dpr); canvas.height = Math.floor(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      p.hx = p.nx * w; p.hy = p.ny * h;
+      if (!p.placed) { p.x = p.hx; p.y = p.hy; p.placed = true; }
+    }
+  }
+
+  function drawParticles() {
+    for (var i = 0; i < parts.length; i++) {
+      var o = parts[i];
+      if (pointer.on) {
+        var dx = o.x - pointer.px, dy = o.y - pointer.py, dd = dx * dx + dy * dy;
+        if (dd < PUSH_R * PUSH_R) {
+          var d = Math.sqrt(dd) || 1, f = 1 - d / PUSH_R;
+          o.vx += (dx / d) * f * PUSH_F; o.vy += (dy / d) * f * PUSH_F;
+        }
+      }
+      /* 彈返**自己個家**而唔係畫面中心 —— 唔係一推到中間就會攏成一堆散唔返 */
+      var wx = Math.sin(t * 0.55 + o.ph) * WANDER;
+      var wy = Math.cos(t * 0.42 + o.ph * 1.7) * WANDER;
+      o.vx += (o.hx + wx - o.x) * SPRING; o.vy += (o.hy + wy - o.y) * SPRING;
+      o.vx *= DAMPING; o.vy *= DAMPING; o.x += o.vx; o.y += o.vy;
+      ctx.globalAlpha = o.a; ctx.fillStyle = o.c;
+      ctx.beginPath(); ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    drawParticles();
+
+    var tiltX = -0.34 + pointer.ty * 0.20, tiltY = pointer.tx * 0.30;
+    var cosY = Math.cos(tiltY), sinY = Math.sin(tiltY);
+    var cosX = Math.cos(tiltX), sinX = Math.sin(tiltX);
+    var cx = w / 2, cy = h / 2;
+    var scale = Math.min(w / 300, h / 500) * ZOOM;
+
+    function rot(x0, y0, z0) {
+      var x1 = x0 * cosY - z0 * sinY, z1 = x0 * sinY + z0 * cosY;
+      var y1 = y0 * cosX - z1 * sinX, z2 = y0 * sinX + z1 * cosX;
+      var s = FOCAL / (FOCAL + z2);
+      return { x: cx + x1 * s * scale, y: cy + y1 * s * scale, z: z2, s: s };
+    }
+
+    var nodes = [];
+    for (var i = 0; i < PAIRS; i++) {
+      var axisY = (i / (PAIRS - 1) - 0.5) * SPAN;
+      var ang = i * TWIST + t;
+      var leftKey = ORDER[i % 4], rightKey = BASES[leftKey].pair;
+      var ax = Math.cos(ang) * RADIUS, az = Math.sin(ang) * RADIUS;
+      var pa = rot(ax, axisY, az), pb = rot(-ax, axisY, -az);
+      var mid = { x: (pa.x + pb.x) / 2, y: (pa.y + pb.y) / 2 };
+      nodes.push({
+        kind: 'rung', z: (pa.z + pb.z) / 2,
+        x1: pa.x, y1: pa.y, x2: mid.x, y2: mid.y, c1: BASES[leftKey].color,
+        ax: mid.x, ay: mid.y, bx: pb.x, by: pb.y, c2: BASES[rightKey].color
+      });
+      nodes.push({ kind: 'bead', x: pa.x, y: pa.y, z: pa.z, s: pa.s, c: BASES[leftKey].color });
+      nodes.push({ kind: 'bead', x: pb.x, y: pb.y, z: pb.z, s: pb.s, c: BASES[rightKey].color });
+    }
+    nodes.sort(function (a, b) { return b.z - a.z; });   /* z 大＝遠，先畫 */
+
+    for (var k = 0; k < nodes.length; k++) {
+      var n = nodes[k];
+      var depth = 1 - (n.z + RADIUS * 2) / (RADIUS * 4);
+      depth = Math.max(0, Math.min(1, depth));
+      ctx.globalAlpha = 0.14 + depth * 0.86;
+      if (n.kind === 'bead') {
+        var r = Math.max(1.4, 3.6 * n.s * scale);
+        ctx.fillStyle = n.c;
+        ctx.beginPath(); ctx.arc(n.x, n.y, r * (0.65 + depth * 0.65), 0, Math.PI * 2); ctx.fill();
+        if (depth > 0.62) {
+          ctx.globalAlpha = (depth - 0.62) * 1.3; ctx.fillStyle = '#FFFFFF';
+          ctx.beginPath(); ctx.arc(n.x - r * 0.28, n.y - r * 0.34, r * 0.30, 0, Math.PI * 2); ctx.fill();
+        }
+      } else {
+        ctx.globalAlpha = ctx.globalAlpha * 0.7;
+        ctx.lineWidth = 1 + depth * 1.8; ctx.lineCap = 'round'; ctx.setLineDash([3, 5]);
+        ctx.strokeStyle = n.c1;
+        ctx.beginPath(); ctx.moveTo(n.x1, n.y1); ctx.lineTo(n.x2, n.y2); ctx.stroke();
+        ctx.strokeStyle = n.c2;
+        ctx.beginPath(); ctx.moveTo(n.ax, n.ay); ctx.lineTo(n.bx, n.by); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function frame() {
+    t += SPEED;
+    pointer.x += (pointer.tx - pointer.x) * 0.06;
+    pointer.y += (pointer.ty - pointer.y) * 0.06;
+    draw();
+    requestAnimationFrame(frame);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  if (reduce) { draw(); }
+  else {
+    stage.addEventListener('pointermove', function (e) {
+      var r = stage.getBoundingClientRect();
+      pointer.px = e.clientX - r.left; pointer.py = e.clientY - r.top;
+      pointer.on = true;
+      pointer.tx = (pointer.px / r.width - 0.5) * 2;
+      pointer.ty = (pointer.py / r.height - 0.5) * 2;
+    });
+    stage.addEventListener('pointerleave', function () {
+      pointer.on = false; pointer.tx = 0; pointer.ty = 0;
+    });
+    requestAnimationFrame(frame);
+  }
+})();
+</script>
+</body>
+</html>
