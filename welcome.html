@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<!--
+  ══════════════════════════════════════════════════════════════
+  Welcome Page · 完全獨立版（拆走 Tailwind，唔靠任何 framework）
+  ══════════════════════════════════════════════════════════════
+
+  用法：呢個檔 drop 落任何 project 就開得，唔使改任何嘢。
+        要改成自己嘅，改下面 6 個位就夠（每個都有 ★ 標記）。
+
+  ★1  標題（<title>）
+  ★2  Logo 名（.brand-name）
+  ★3  導覽連結（.nav 入面嘅 href）
+  ★4  Slogan 文字（每個字一個 <span class="c">，--i 由 0 遞增）
+  ★5  CTA 掣指向（.btn-primary 嘅 href）
+  ★6  DNA 大細／轉速（script 入面 ZOOM / SPEED）
+
+  出場次序：字 → 掣 → 圖（大物件郁得慢啲，所以 DNA 最遲入場）
+-->
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- ★1 -->
+<title>LearnHub｜知識唔係死背　係睇得見</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════════════════
+   配色 token（同 LearnHub UI Kit 一致）
+   ══════════════════════════════════════════════════════════ */
+:root {
+  --brand-50:  #F5FAFC;
+  --brand-100: #E7F4F9;
+  --brand-200: #CBE8F2;
+  --brand-300: #A5D7E8;
+  --brand-400: #77C3DD;
+  --brand-500: #51B2D3;
+  --brand-600: #459DBB;
+  --brand-700: #3987A3;
+  --brand-800: #2C7088;
+  --brand-900: #1F586C;
+  --brand-950: #144557;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--brand-50);
+  font-family: 'Geist', 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+  color: var(--brand-950);
+}
+
+/* ── 版面骨架 ─────────────────────────────────────────────── */
+.welcome {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  /* ⚙️ 動效 token —— 想整體快／慢就改呢組 */
+  --dur-1: 120ms;                 /* micro：hover、focus        */
+  --dur-2: 240ms;                 /* 組件：換頁、卡升降          */
+  --dur-3: 480ms;                 /* 頁面：整頁轉場             */
+  --ease-out:    cubic-bezier(.16, 1, .3, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+
+  /* ⚙️ 出場節奏（跟 Bento Grid pro：expo.out · dur 1.1 · stagger .03） */
+  --expo-out:      cubic-bezier(.16, 1, .3, 1);   /* ＝ GSAP expo.out */
+  --t-nav:         880ms;    /* 導覽列（dur × .8）        */
+  --t-h1:          1100ms;   /* 標題每個字（dur）          */
+  --t-char:        30ms;     /* 字同字之間（stagger .03）  */
+  --t-bits:        1100ms;   /* CTA 掣                    */
+  --t-bits-delay:  350ms;    /* 掣幾時開始                 */
+  --t-hero:        1320ms;   /* DNA（dur × 1.2，大物件慢啲）*/
+  --t-hero-delay:  600ms;    /* DNA 幾時開始 —— 排喺掣後面 */
+}
+
+.wrap { width: 100%; max-width: 72rem; margin: 0 auto; padding: 2.5rem 1.5rem; }
+@media (min-width: 1024px) { .wrap { padding: 3rem 2.5rem; } }
+
+/* ── 頂部導覽：第 1 個入場（y -30 → 0）────────────────────── */
+.site-header {
+  flex: 0 0 auto; height: 4rem;
+  display: flex; align-items: center;
+  padding: 0 1.5rem;
+  box-shadow: 0 1px 0 var(--brand-200);   /* shadow-as-border */
+  animation: drop var(--t-nav) var(--expo-out) both;
+}
+@media (min-width: 1024px) { .site-header { padding: 0 2.5rem; } }
+
+.brand { display: flex; align-items: center; gap: .625rem; text-decoration: none; }
+.brand-logo {
+  width: 2rem; height: 2rem; border-radius: 8px;
+  background: var(--brand-600); color: #fff;
+  display: grid; place-items: center;
+}
+.brand-name { font-weight: 600; color: var(--brand-950); letter-spacing: -.02em; }
+
+.nav { margin-left: auto; display: flex; align-items: center; gap: .25rem; font-size: .875rem; }
+.nav-link {
+  padding: .5rem .75rem; border-radius: 6px;
+  color: var(--brand-800); text-decoration: none;
+  transition: background var(--dur-1) ease, color var(--dur-1) ease;
+}
+.nav-link:hover { background: var(--brand-100); color: var(--brand-950); }
+.nav-sep { width: 1px; height: 1.25rem; background: var(--brand-200); margin: 0 .25rem; }
+
+/* ── 主體：左 slogan、右 3D ───────────────────────────────── */
+.site-main { flex: 1; display: flex; align-items: center; }
+.grid {
+  display: grid; gap: 2.5rem; align-items: center;
+}
+@media (min-width: 1024px) {
+  .grid { grid-template-columns: 5fr 7fr; gap: 3.5rem; }
+}
+
+/* ── Slogan：mask reveal ──────────────────────────────────────
+   .m = mask（overflow hidden）；.c = 字。字由 mask 下面升上嚟。
+   唔用 opacity —— mask 本身已經遮住，加咗會變「淡入 + 升起」兩重效果。
+   ⚠️ 中文字形唔會超出 em 框（唔似拉丁字母 g/y/p 有 descender），
+      所以中文版直接 overflow:hidden 就夠。英文版要留 padding（見下）。 */
+.slogan {
+  font-size: clamp(2.3rem, 5vw, 4rem);
+  font-weight: 700; line-height: 1.24; letter-spacing: -.03em;
+  color: var(--brand-950); margin: 0;
+}
+.slogan .k { color: var(--brand-700); letter-spacing: -.04em; }
+
+/* 兩句各佔一行，各自「一行過」。
+   用 flex 而唔係 display:block：flex 會丟棄子元素之間嘅空白 text node，
+   否則 <span class="m"> 之間嘅新行同縮排會 render 成空格。 */
+.sl-line { display: flex; flex-wrap: nowrap; }
+
+.m { display: inline-block; overflow: hidden; vertical-align: bottom; }
+.c {
+  display: inline-block;
+  animation: charRise var(--t-h1) var(--expo-out) both;
+  animation-delay: calc(var(--i) * var(--t-char));
+}
+
+/* 英文版：逐「詞」reveal，所以要留詞距同 descender 位。
+   ⚠️ overflow:hidden 係 clip 到 padding box，所以 padding 真係會露出嚟；
+      加 padding-bottom 撐開 mask、再用同量負 margin-bottom 收返，版面不變。 */
+.sl-en { gap: .26em; }
+.sl-en .m { padding-bottom: .22em; margin-bottom: -.22em; }
+.slogan-en { --t-char: 120ms; }   /* 得幾個詞，stagger 要大啲 */
+
+/* ── CTA：第 3 個入場（delay 350ms，y 26 → 0）──────────────── */
+.bits {
+  margin-top: 2.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: .75rem;
+  animation: bits var(--t-bits) var(--expo-out) var(--t-bits-delay) both;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--brand-700); color: #fff;   /* 白字 4.6:1，過 WCAG AA */
+  padding: .75rem 1.25rem; border-radius: 8px;
+  font-size: .9rem; font-weight: 500; text-decoration: none;
+  transition: background var(--dur-1) ease, transform var(--dur-1) ease;
+}
+.btn-primary:hover { background: var(--brand-800); transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 2px; }
+
+/* ── 3D 舞台：冇背景冇邊框，DNA 直接浮喺頁面度 ────────────── */
+.stage-in { animation: stageIn var(--t-hero) var(--expo-out) var(--t-hero-delay) both; }
+.stage { position: relative; height: 32rem; cursor: crosshair; }
+.stage canvas { display: block; width: 100%; height: 100%; }
+@media (max-width: 1023px) { .stage { height: 24rem; } }
+
+/* ── 頁腳 ─────────────────────────────────────────────────── */
+.site-footer { flex: 0 0 auto; box-shadow: 0 -1px 0 var(--brand-200); }
+.label-mono {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  font-size: 11px; font-weight: 500; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--brand-400);
+  margin: 0; text-align: center; padding: 1.5rem 0;
+}
+
+/* ══════════════ 動畫 ══════════════ */
+@keyframes drop {
+  from { opacity: 0; transform: translate3d(0, -30px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes charRise {
+  from { transform: translate3d(0, 130%, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+@keyframes bits {
+  from { opacity: 0; transform: translate3d(0, 26px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes stageIn {
+  from { opacity: 0; transform: scale(.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── 無障礙：減少動畫 ─────────────────────────────────────────
+   用 .01ms + !important 而唔係 animation:none —— 保留動畫結束狀態，
+   唔會出現「未播完就卡喺 opacity:0」。
+   ⚠️ 一定要連 animation-delay 都清零。只縮短 duration 嘅話，有延遲嘅
+      元素（例如 DNA 600ms）會令用家望住空白成分鐘。 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── 手機 ── */
+@media (max-width: 640px) {
+  .site-header { padding: 0 1rem; }
+  .nav { gap: 0; }
+  .nav-link { padding: .45rem .55rem; font-size: .82rem; }
+  .wrap { padding: 1.75rem 1rem; }
+  .stage { height: 18rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="welcome">
+
+  <!-- ══════════ 導覽 ══════════ -->
+  <header class="site-header">
+    <a href="#" class="brand">
+      <span class="brand-logo">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 6.5C10.5 5 8.5 4.5 5.5 4.5v13c3 0 5 .5 6.5 2 1.5-1.5 3.5-2 6.5-2v-13c-3 0-5 .5-6.5 2zm0 0v13"/>
+        </svg>
+      </span>
+      <!-- ★2 Logo 名 -->
+      <span class="brand-name">LearnHub</span>
+    </a>
+
+    <nav class="nav">
+      <!-- ★3 導覽連結 -->
+      <a href="#" class="nav-link">瀏覽資源</a>
+      <a href="#" class="nav-link">投稿作品</a>
+      <span class="nav-sep"></span>
+      <a href="#" class="nav-link">登入</a>
+    </nav>
+  </header>
+
+  <!-- ══════════ Hero ══════════ -->
+  <main class="site-main">
+    <div class="wrap">
+      <div class="grid">
+
+        <div>
+          <!-- ★4 Slogan：每個字一個 <span class="c">，--i 由 0 遞增。
+                   想強調邊幾個字，加 class="k"（會變 brand-700）。 -->
+          <h1 class="slogan">
+            <span class="sl-line">
+              <span class="m"><span class="c" style="--i:0">知</span></span>
+              <span class="m"><span class="c" style="--i:1">識</span></span>
+              <span class="m"><span class="c" style="--i:2">唔</span></span>
+              <span class="m"><span class="c" style="--i:3">係</span></span>
+              <span class="m"><span class="c" style="--i:4">死</span></span>
+              <span class="m"><span class="c" style="--i:5">背</span></span>
+            </span>
+            <span class="sl-line">
+              <span class="m"><span class="c k" style="--i:6">係</span></span>
+              <span class="m"><span class="c k" style="--i:7">睇</span></span>
+              <span class="m"><span class="c k" style="--i:8">得</span></span>
+              <span class="m"><span class="c k" style="--i:9">見</span></span>
+            </span>
+          </h1>
+
+          <!--
+            英文版（逐「詞」reveal）：換走上面個 <h1> 就得。
+            <h1 class="slogan slogan-en">
+              <span class="sl-line sl-en">
+                <span class="m"><span class="c" style="--i:0">Not</span></span>
+                <span class="m"><span class="c" style="--i:1">by</span></span>
+                <span class="m"><span class="c" style="--i:2">heart</span></span>
+              </span>
+              <span class="sl-line sl-en">
+                <span class="m"><span class="c k" style="--i:3">By</span></span>
+                <span class="m"><span class="c k" style="--i:4">sight</span></span>
+              </span>
+            </h1>
+          -->
+
+          <div class="bits">
+            <!-- ★5 CTA 指向 -->
+            <a href="#" class="btn-primary">
+              進入平台
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M13 6l6 6-6 6"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="stage-in">
+          <div class="stage" id="stage">
+            <canvas id="helix" aria-hidden="true"></canvas>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ══════════ 頁腳 ══════════ -->
+  <footer class="site-footer">
+    <p class="label-mono">LearnHub</p>
+  </footer>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   3D DNA 雙螺旋 —— 真透視投影（z 影響大細同位置）+ 深度排序（遠嘅先畫）
+   冇用任何 library。
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  var canvas = document.getElementById('helix');
+  var stage = document.getElementById('stage');
+  if (!canvas || !stage) return;
+  var ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ★6 想調大細／速度，改呢兩個數 */
+  var ZOOM = 2.0;        /* 1.0 = 原本大小 */
+  var SPEED = 0.003;     /* 轉速（原本 0.006，即係慢一半）*/
+
+  /* A–T、C–G 兩對互補色；一對鹼基左右兩半用唔同色 */
+  var BASES = {
+    A: { color: '#E4572E', pair: 'T' },   /* 腺嘌呤 — 橙紅 */
+    T: { color: '#1F6FB2', pair: 'A' },   /* 胸腺嘧啶 — 藍 */
+    C: { color: '#2E9E6B', pair: 'G' },   /* 胞嘧啶 — 綠 */
+    G: { color: '#E0A100', pair: 'C' }    /* 鳥嘌呤 — 琥珀 */
+  };
+  var ORDER = ['A', 'T', 'C', 'G'];
+
+  var PAIRS = 46, RADIUS = 62, TWIST = 0.36, SPAN = 620, FOCAL = 520;
+
+  var w = 0, h = 0, dpr = 1, t = 0;
+  var pointer = { x: 0, y: 0, tx: 0, ty: 0, px: -999, py: -999, on: false };
+
+  /* ── 外圍粒子：每粒有自己個「家」（出生點），
+        畀滑鼠推開之後彈返**自己**個位 —— 唔係彈返畫面中心，
+        否則一推到中間就會攏成一堆、散唔返開。 */
+  var PARTICLES = 46, PUSH_R = 90, PUSH_F = 2.0, SPRING = 0.008, DAMPING = 0.92, WANDER = 3.2;
+  var DOT_COLORS = ['#77C3DD', '#51B2D3', '#A5D8E8'];
+  var parts = [];
+
+  for (var pi = 0; pi < PARTICLES; pi++) {
+    var pang = Math.random() * Math.PI * 2;
+    var prad = Math.sqrt(Math.random()) * 0.5;   /* sqrt → 面積均勻，唔會中間密邊緣疏 */
+    parts.push({
+      nx: 0.5 + Math.cos(pang) * prad,
+      ny: 0.5 + Math.sin(pang) * prad,
+      hx: 0, hy: 0, x: 0, y: 0, vx: 0, vy: 0, placed: false,
+      r: 1 + Math.random() * 1.9,
+      a: 0.22 + Math.random() * 0.42,
+      ph: Math.random() * Math.PI * 2,
+      c: DOT_COLORS[pi % DOT_COLORS.length]
+    });
+  }
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var rect = stage.getBoundingClientRect();
+    w = Math.max(1, rect.width);
+    h = Math.max(1, rect.height);
+    canvas.width = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      p.hx = p.nx * w;
+      p.hy = p.ny * h;
+      if (!p.placed) { p.x = p.hx; p.y = p.hy; p.placed = true; }
+    }
+  }
+
+  function drawParticles() {
+    for (var i = 0; i < parts.length; i++) {
+      var o = parts[i];
+
+      /* 畀滑鼠推開（只喺半徑內，力度隨距離衰減）*/
+      if (pointer.on) {
+        var dx = o.x - pointer.px, dy = o.y - pointer.py;
+        var dd = dx * dx + dy * dy;
+        if (dd < PUSH_R * PUSH_R) {
+          var d = Math.sqrt(dd) || 1;
+          var f = 1 - d / PUSH_R;
+          o.vx += (dx / d) * f * PUSH_F;
+          o.vy += (dy / d) * f * PUSH_F;
+        }
+      }
+
+      /* 唔郁嘅時候輕輕飄 —— 幅度細過家同家之間嘅距離，所以唔會撞埋 */
+      var wx = Math.sin(t * 0.55 + o.ph) * WANDER;
+      var wy = Math.cos(t * 0.42 + o.ph * 1.7) * WANDER;
+
+      /* 彈簧拉返自己個家 */
+      o.vx += (o.hx + wx - o.x) * SPRING;
+      o.vy += (o.hy + wy - o.y) * SPRING;
+      o.vx *= DAMPING;
+      o.vy *= DAMPING;
+      o.x += o.vx;
+      o.y += o.vy;
+
+      ctx.globalAlpha = o.a;
+      ctx.fillStyle = o.c;
+      ctx.beginPath();
+      ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+
+    drawParticles();   /* 粒子喺 DNA 後面 */
+
+    var tiltX = -0.34 + pointer.ty * 0.20;
+    var tiltY = pointer.tx * 0.30;
+    var cosY = Math.cos(tiltY), sinY = Math.sin(tiltY);
+    var cosX = Math.cos(tiltX), sinX = Math.sin(tiltX);
+    var cx = w / 2, cy = h / 2;
+    var scale = Math.min(w / 300, h / 500) * ZOOM;
+
+    function rot(x0, y0, z0) {
+      var x1 = x0 * cosY - z0 * sinY;
+      var z1 = x0 * sinY + z0 * cosY;
+      var y1 = y0 * cosX - z1 * sinX;
+      var z2 = y0 * sinX + z1 * cosX;
+      var s = FOCAL / (FOCAL + z2);
+      return { x: cx + x1 * s * scale, y: cy + y1 * s * scale, z: z2, s: s };
+    }
+
+    var nodes = [];
+
+    for (var i = 0; i < PAIRS; i++) {
+      var axisY = (i / (PAIRS - 1) - 0.5) * SPAN;
+      var ang = i * TWIST + t;
+
+      var leftKey = ORDER[i % 4];            /* 四隻鹼基輪住出現 */
+      var rightKey = BASES[leftKey].pair;
+
+      var ax = Math.cos(ang) * RADIUS;
+      var az = Math.sin(ang) * RADIUS;
+      var pa = rot(ax, axisY, az);
+      var pb = rot(-ax, axisY, -az);
+      var mid = { x: (pa.x + pb.x) / 2, y: (pa.y + pb.y) / 2 };
+
+      /* 鹼基對：左右兩半唔同色 */
+      nodes.push({
+        kind: 'rung', z: (pa.z + pb.z) / 2,
+        x1: pa.x, y1: pa.y, x2: mid.x, y2: mid.y, c1: BASES[leftKey].color,
+        ax: mid.x, ay: mid.y, bx: pb.x, by: pb.y, c2: BASES[rightKey].color
+      });
+      nodes.push({ kind: 'bead', x: pa.x, y: pa.y, z: pa.z, s: pa.s, c: BASES[leftKey].color });
+      nodes.push({ kind: 'bead', x: pb.x, y: pb.y, z: pb.z, s: pb.s, c: BASES[rightKey].color });
+    }
+
+    nodes.sort(function (a, b) { return b.z - a.z; });   /* z 大＝遠，先畫 */
+
+    for (var k = 0; k < nodes.length; k++) {
+      var n = nodes[k];
+      var depth = 1 - (n.z + RADIUS * 2) / (RADIUS * 4);
+      depth = Math.max(0, Math.min(1, depth));
+      ctx.globalAlpha = 0.14 + depth * 0.86;
+
+      if (n.kind === 'bead') {
+        var r = Math.max(1.4, 3.6 * n.s * scale);
+        ctx.fillStyle = n.c;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, r * (0.65 + depth * 0.65), 0, Math.PI * 2);
+        ctx.fill();
+        if (depth > 0.62) {                  /* 近嘅加一點高光 */
+          ctx.globalAlpha = (depth - 0.62) * 1.3;
+          ctx.fillStyle = '#FFFFFF';
+          ctx.beginPath();
+          ctx.arc(n.x - r * 0.28, n.y - r * 0.34, r * 0.30, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else {
+        ctx.globalAlpha = ctx.globalAlpha * 0.7;
+        ctx.lineWidth = 1 + depth * 1.8;
+        ctx.lineCap = 'round';
+        ctx.setLineDash([3, 5]);
+        ctx.strokeStyle = n.c1;
+        ctx.beginPath(); ctx.moveTo(n.x1, n.y1); ctx.lineTo(n.x2, n.y2); ctx.stroke();
+        ctx.strokeStyle = n.c2;
+        ctx.beginPath(); ctx.moveTo(n.ax, n.ay); ctx.lineTo(n.bx, n.by); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function frame() {
+    t += SPEED;
+    pointer.x += (pointer.tx - pointer.x) * 0.06;
+    pointer.y += (pointer.ty - pointer.y) * 0.06;
+    draw();
+    requestAnimationFrame(frame);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  if (reduce) {
+    draw();                                  /* 唔郁，出一格靜態圖 */
+  } else {
+    stage.addEventListener('pointermove', function (e) {
+      var r = stage.getBoundingClientRect();
+      pointer.px = e.clientX - r.left;
+      pointer.py = e.clientY - r.top;
+      pointer.on = true;
+      pointer.tx = (pointer.px / r.width - 0.5) * 2;
+      pointer.ty = (pointer.py / r.height - 0.5) * 2;
+    });
+    stage.addEventListener('pointerleave', function () {
+      pointer.on = false;
+      pointer.tx = 0;
+      pointer.ty = 0;
+    });
+    requestAnimationFrame(frame);
+  }
+})();
+</script>
+</body>
+</html>
